@@ -1,0 +1,187 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jana1218/frist_repo/blob/main/scrapping%20data\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "5zrLwfFVBSOI"
+      },
+      "outputs": [],
+      "source": [
+        "import requests\n",
+        "from bs4 import BeautifulSoup\n",
+        "\n",
+        "url = \"https://www.amazon.eg/-/en/b/?ie=UTF8&node=21863796031&ref_=sv_sv_home_all_4\"\n",
+        "headers = {\n",
+        "    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'\n",
+        "}\n",
+        "response = requests.get(url, headers=headers)\n",
+        "\n",
+        "if response.status_code == 200:\n",
+        "    with open(\"sv_sv_home_all_4.html\", mode='wb') as file:\n",
+        "        file.write(response.content)\n",
+        "else:\n",
+        "    print(f\"Failed to retrieve data: {response.status_code}\")\n",
+        "\n",
+        "soup = BeautifulSoup(response.content, 'html.parser')\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "div = soup.find_all('span', class_='a-offscreen')\n",
+        "price = []\n",
+        "for x in div:\n",
+        "    price.append(x.contents[0])\n",
+        "    print(x.contents[0])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "LrYZoiIpEZbY",
+        "outputId": "d0ec01fa-08c2-4f1b-904e-18cabe722679"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "EGP139.00\n",
+            "EGP160.00\n",
+            "EGP142.00\n",
+            "EGP163.00\n",
+            "EGP190.00\n",
+            "EGP324.00\n",
+            "EGP145.00\n",
+            "EGP178.00\n",
+            "EGP199.88\n",
+            "EGP213.00\n",
+            "EGP740.00\n",
+            "EGP783.00\n",
+            "EGP870.00\n",
+            "EGP840.00\n",
+            "EGP900.00\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "div = soup.find_all('span', class_='a-truncate a-size-base')\n",
+        "name = []\n",
+        "\n",
+        "for x in div:\n",
+        "    name.append(x.find(\"span\",class_ = \"a-truncate-full\").contents[0])\n",
+        "    print(x.find(\"span\",class_ = \"a-truncate-full\").contents[0])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "APkcofOwFsWc",
+        "outputId": "a4c47c89-973a-43a0-a208-2e8c37be288a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Adjustable laptop stand, portable aluminium laptop riser laptop holder for desk, foldable ventilated cooling computer support stand for apple macbook pro/air, hp, sony, dell, more 10-15.6''\n",
+            "Foldable laptop table laptop desk portable mini table notebook stand reading holder for bed and sofa, assorted color\n",
+            "Bathroom Basket Rack Shelf Caddy Adhesive Metal Wall Storage Mesh Rack, Storage Shelf Hanging Organizer with Shampoo Basket Racks Stand for Bathroom, Kitchen, Garage Rack, Include 2 Adhesive Hook\n",
+            "Astory Laptop Bed Tray Table, Portable for Reading Book (Wood)\n",
+            "10 Layer Stack-able Shoe Rack - Holds 30 Pairs Shoes\n",
+            "Generic Full Motion Wall Mount for Monitors Up to 50 Inch, Compatible with Devices Using VESA 100x100mm Pattern, Up to 5kg, Aluminum, Black\n",
+            "desk with racks - White\n",
+            "softness mattress topper from comfort company height 10 cm (150 * 200)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "div = soup.find_all('span', class_='a-color-secondary acsProductBlockV1__rating__review-count')\n",
+        "rate_count = []\n",
+        "\n",
+        "for x in div:\n",
+        "    rate_count.append(x.contents[0])\n",
+        "    print(x.contents[0])"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cmVvaUfsGYDk",
+        "outputId": "d6ddb87d-fc83-49fe-9612-92ff2510c4fa"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            " 4,817\n",
+            " 100\n",
+            " 60\n",
+            " 661\n",
+            " 129\n",
+            " 102\n",
+            " 531\n",
+            " 35\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "o7qHSnnLIAYt",
+        "outputId": "cb86e5e4-298d-4909-98f4-d05ba08a2d63"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[<span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 4,817</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 100</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 60</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 661</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 129</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 102</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 531</span>, <span class=\"a-color-secondary acsProductBlockV1__rating__review-count\"> 35</span>] [<span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">Adjustable laptop stand, portable aluminium laptop riser laptop holder for desk, foldable ventilated cooling computer support stand for apple macbook pro/air, hp, sony, dell, more 10-15.6''</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">Foldable laptop table laptop desk portable mini table notebook stand reading holder for bed and sofa, assorted color</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">Bathroom Basket Rack Shelf Caddy Adhesive Metal Wall Storage Mesh Rack, Storage Shelf Hanging Organizer with Shampoo Basket Racks Stand for Bathroom, Kitchen, Garage Rack, Include 2 Adhesive Hook</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">Astory Laptop Bed Tray Table, Portable for Reading Book (Wood)</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">10 Layer Stack-able Shoe Rack - Holds 30 Pairs Shoes</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">Generic Full Motion Wall Mount for Monitors Up to 50 Inch, Compatible with Devices Using VESA 100x100mm Pattern, Up to 5kg, Aluminum, Black</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">desk with racks - White</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>, <span class=\"a-truncate a-size-base\" data-a-max-rows=\"2\" data-a-overflow-marker=\"&amp;hellip;\" data-a-word-break=\"break-word\" style=\"line-height:1.3em !important;max-height:2.6em\"><span class=\"a-truncate-full\">softness mattress topper from comfort company height 10 cm (150 * 200)</span><span aria-hidden=\"true\" class=\"a-truncate-cut a-hidden\"></span></span>] [<span class=\"a-offscreen\">EGP139.00</span>, <span class=\"a-offscreen\">EGP160.00</span>, <span class=\"a-offscreen\">EGP142.00</span>, <span class=\"a-offscreen\">EGP163.00</span>, <span class=\"a-offscreen\">EGP190.00</span>, <span class=\"a-offscreen\">EGP324.00</span>, <span class=\"a-offscreen\">EGP145.00</span>, <span class=\"a-offscreen\">EGP178.00</span>, <span class=\"a-offscreen\">EGP199.88</span>, <span class=\"a-offscreen\">EGP213.00</span>, <span class=\"a-offscreen\">EGP740.00</span>, <span class=\"a-offscreen\">EGP783.00</span>, <span class=\"a-offscreen\">EGP870.00</span>, <span class=\"a-offscreen\">EGP840.00</span>, <span class=\"a-offscreen\">EGP900.00</span>]\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
